@@ -9,5 +9,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         // Antti lisäsi kommentin
         // Arttu Lisäsi kommentin
+        //Kimmo testasi
     }
 }
