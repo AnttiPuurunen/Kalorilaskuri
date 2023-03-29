@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Kalorilaskuri</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="start_fragment">Tämä on StartFragment</string>
+    <string name="add_fragment">Tämä on AddFragment</string>
+    <string name="details_fragment">Tämä on DetailsFragment</string>
 </resources>
