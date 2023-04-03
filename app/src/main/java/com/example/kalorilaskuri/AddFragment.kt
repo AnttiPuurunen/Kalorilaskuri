@@ -11,8 +11,13 @@ import android.widget.SeekBar
 import android.widget.TextView
 import android.text.Editable
 import android.text.TextWatcher
+import androidx.lifecycle.ViewModelProvider
+import com.example.kalorilaskuri.viewmodels.MealViewModel
+import java.text.SimpleDateFormat
+import java.util.*
 
-data class Ruoka(val nimi: String, val maara: Int, val kalorit: String)
+
+data class meal(val mealDate: String, val foodName: String, val quantity: Int, val calories: String)
 
 class AddFragment : Fragment() {
     /**private lateinit var ruokaViewModel: RuokaViewModel*/
@@ -22,6 +27,7 @@ class AddFragment : Fragment() {
     private lateinit var tallennaButton: Button
     private lateinit var kaloritextView: TextView
     private lateinit var kalorimaaraeditTextNumber: EditText
+    private lateinit var mealViewModel: MealViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,7 +40,7 @@ class AddFragment : Fragment() {
         tallennaButton = view.findViewById(R.id.tallennaButton)
         kaloritextView = view.findViewById(R.id.kaloritextView)
         kalorimaaraeditTextNumber = view.findViewById(R.id.kalorimaaraeditTextNumber)
-        //ruokaViewModel = ViewModelProvider(this).get(RuokaViewModel::class.java)
+        mealViewModel = ViewModelProvider(requireActivity()).get(MealViewModel::class.java)
 
         maaraSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
@@ -58,12 +64,14 @@ class AddFragment : Fragment() {
         })
 
         tallennaButton.setOnClickListener {
-            val nimi = ruokaEditText.text.toString()
-            val maara = maaraSeekBar.progress
-            val kalorit = kaloritextView.text.toString()
-            val ruoka = Ruoka(nimi = nimi, maara = maara, kalorit = kalorit)
+            val foodName = ruokaEditText.text.toString()
+            val quantity = maaraSeekBar.progress
+            val calories = kaloritextView.text.toString()
+            val mealDate = getCurrentDate()
+
             //ruokaViewModel.insertRuoka(ruoka)
-            println(ruoka.toString())
+            mealViewModel.addNewMeal(mealDate = mealDate, foodName = foodName, quantity = quantity, calories = calories)
+
         }
         return view
     }
@@ -73,5 +81,9 @@ class AddFragment : Fragment() {
         val tulos = maara * arvo / 100
         val tulosText = "$tulos kcal"
         kaloritextView.text = tulosText
+    }
+    private fun getCurrentDate(): String {
+        val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+        return dateFormat.format(Date())
     }
 }
