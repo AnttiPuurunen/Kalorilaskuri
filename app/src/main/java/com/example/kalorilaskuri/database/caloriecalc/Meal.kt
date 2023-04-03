@@ -15,5 +15,6 @@ data class Meal(
     val mealId: Int = 0,
     @NonNull @ColumnInfo(name = "meal_date") val mealDate: String,
     @NonNull @ColumnInfo(name = "food_name") val foodName: String,
-    @NonNull @ColumnInfo(name= "quantity") val quantity: Int
+    @NonNull @ColumnInfo(name= "quantity") val quantity: Int,
+    @NonNull @ColumnInfo(name = "calories") val calories: String
 )
