@@ -5,55 +5,73 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.SeekBar
+import android.widget.TextView
+import android.text.Editable
+import android.text.TextWatcher
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+data class Ruoka(val nimi: String, val maara: Int, val kalorit: String)
 
-/**
- * A simple [Fragment] subclass.
- * Use the [AddFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class AddFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    /**private lateinit var ruokaViewModel: RuokaViewModel*/
+    private lateinit var maaraSeekBar1: TextView
+    private lateinit var maaraSeekBar: SeekBar
+    private lateinit var ruokaEditText: TextView
+    private lateinit var tallennaButton: Button
+    private lateinit var kaloritextView: TextView
+    private lateinit var kalorimaaraeditTextNumber: EditText
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add, container, false)
-    }
+        val view = inflater.inflate(R.layout.fragment_add, container, false)
+        maaraSeekBar1 = view.findViewById(R.id.maaraSeekBar1)
+        maaraSeekBar = view.findViewById(R.id.maaraSeekBar)
+        ruokaEditText = view.findViewById(R.id.ruokaEditText)
+        tallennaButton = view.findViewById(R.id.tallennaButton)
+        kaloritextView = view.findViewById(R.id.kaloritextView)
+        kalorimaaraeditTextNumber = view.findViewById(R.id.kalorimaaraeditTextNumber)
+        //ruokaViewModel = ViewModelProvider(this).get(RuokaViewModel::class.java)
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment AddFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            AddFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+        maaraSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                val maaraText = "$progress g"
+                maaraSeekBar1.text = maaraText
+                laskeKalorit()
             }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar) {}
+
+            override fun onStopTrackingTouch(seekBar: SeekBar) {}
+        })
+
+        kalorimaaraeditTextNumber.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                laskeKalorit()
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        tallennaButton.setOnClickListener {
+            val nimi = ruokaEditText.text.toString()
+            val maara = maaraSeekBar.progress
+            val kalorit = kaloritextView.text.toString()
+            val ruoka = Ruoka(nimi = nimi, maara = maara, kalorit = kalorit)
+            //ruokaViewModel.insertRuoka(ruoka)
+            println(ruoka.toString())
+        }
+        return view
+    }
+    private fun laskeKalorit() {
+        val maara = maaraSeekBar.progress
+        val arvo = kalorimaaraeditTextNumber.text.toString().toDoubleOrNull() ?: 0.0
+        val tulos = maara * arvo / 100
+        val tulosText = "$tulos kcal"
+        kaloritextView.text = tulosText
     }
 }
