@@ -55,18 +55,18 @@ class StartFragment : Fragment() {
         }
         // Bindataan funktio Lisää dataa-nappiin käyttöliittymässä
         binding.addFillerData.setOnClickListener {
-            addFillerData()
+            //addFillerData()
         }
     }
 
-    private fun addFillerData() {
+/**    private fun addFillerData() {
         // Filleridataa testausta varten
 
         mealViewModel.addNewMeal("20.12.2023", "Kakku", 3)
         mealViewModel.addNewMeal("01.10.2022", "Porkkana", 7)
         mealViewModel.addNewMeal("20.02.2021", "Kana", 2)
 
-    }
+    }*/
     fun goToAddScreen() {
         findNavController().navigate(R.id.action_startFragment_to_addFragment2)
     }
