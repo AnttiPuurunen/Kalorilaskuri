@@ -5,10 +5,12 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/startFragment">
 
+    <!-- Päänavigointikomponentti, lisää tänne liikkumiset fragmenttien välillä -->
+
     <fragment
         android:id="@+id/startFragment"
         android:name="com.example.kalorilaskuri.StartFragment"
-        android:label="Aloitussivu"
+        android:label="Kalorilaskuri"
         tools:layout="@layout/fragment_start" >
         <action
             android:id="@+id/action_startFragment_to_addFragment2"

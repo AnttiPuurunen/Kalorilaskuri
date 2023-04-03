@@ -6,6 +6,9 @@
 
     <data>
         <variable
+            name="viewModel"
+            type="com.example.kalorilaskuri.viewmodels.MealViewModel" />
+        <variable
             name="startFragment"
             type="com.example.kalorilaskuri.StartFragment" />
     </data>
@@ -20,9 +23,22 @@
             android:orientation="vertical"
             android:padding="16dp">
 
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:importantForAccessibility="no"
+                android:scaleType="center"
+                app:srcCompat="@drawable/kalorilaskuri_placeholder" />
+
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:id="@+id/count_of_meals_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textSize="20sp"
                 android:text="@string/start_fragment" />
 
             <Button
@@ -31,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:onClick="@{() -> startFragment.goToAddScreen()}"
-                android:text="AddFragmenttiin" />
+                android:text="@string/add_fragment" />
 
             <Button
                 android:id="@+id/nappi_details_fragmenttiin"
@@ -39,7 +55,20 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:onClick="@{() -> startFragment.goToDetailsScreen()}"
-                android:text="DetailsFragmenttiin" />
+                android:text="@string/details_fragment" />
+
+            <Button
+                android:id="@+id/add_filler_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Lisää dataa" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
         </LinearLayout>
     </ScrollView>
 </layout>

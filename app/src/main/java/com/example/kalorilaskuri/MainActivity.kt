@@ -17,6 +17,9 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         val navController = navHostFragment.navController
 
         setupActionBarWithNavController(navController)
+
+        // Alla oleva oli tilapaisratkaisu tietokanta-tiedoston tuhoamiseen
+        //deleteDatabase("calorie_database")
     }
 
     override fun onSupportNavigateUp(): Boolean {
