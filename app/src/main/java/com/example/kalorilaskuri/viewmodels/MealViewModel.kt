@@ -5,6 +5,8 @@ import com.example.kalorilaskuri.database.caloriecalc.Meal
 import com.example.kalorilaskuri.database.caloriecalc.MealDao
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
 
 // Viewmodel tiedonkäsittelyyn, tämän kautta kutsutaan MealDao-interfacen metodeja
 
@@ -20,8 +22,8 @@ class MealViewModel(private val mealDao: MealDao): ViewModel() {
             = mealDao.getNumberOfMeals()
 
     // Otetaan vastaan uuden aterian tiedot ja haetaan uusi Meal-objekti. Tätä kutsutaan fragmentista.
-    fun addNewMeal(mealDate: String, foodName: String, quantity: Int) {
-        val newMeal = getNewMealEntry(mealDate, foodName, quantity)
+    fun addNewMeal(foodName: String, quantity: Int) {
+        val newMeal = getNewMealEntry(foodName, quantity)
         insertMeal(newMeal)
     }
 
@@ -33,9 +35,9 @@ class MealViewModel(private val mealDao: MealDao): ViewModel() {
     }
 
     // Palauttaa uuden Meal-objektin käyttäjän antamilla tiedoilla.
-    private fun getNewMealEntry(mealDate: String, foodName: String, quantity: Int): Meal {
+    private fun getNewMealEntry(foodName: String, quantity: Int): Meal {
         return Meal(
-            mealDate = mealDate,
+            mealDate = SimpleDateFormat("dd.MM.yyyy").format(Date()),
             foodName = foodName,
             quantity = quantity
         )

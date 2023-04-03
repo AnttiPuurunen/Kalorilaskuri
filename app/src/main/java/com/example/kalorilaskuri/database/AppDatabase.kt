@@ -8,7 +8,7 @@ import com.example.kalorilaskuri.database.caloriecalc.*
 
 // Määrittää ja hakee tai tarvittaessa luo uuden tietokanta-instanssin.
 
-@Database(entities = [Meal::class], version = 5, exportSchema = false)
+@Database(entities = [Meal::class], version = 6, exportSchema = false)
 abstract class AppDatabase: RoomDatabase() {
 
     abstract fun mealDao(): MealDao

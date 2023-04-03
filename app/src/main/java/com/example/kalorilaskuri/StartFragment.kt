@@ -62,9 +62,9 @@ class StartFragment : Fragment() {
     private fun addFillerData() {
         // Filleridataa testausta varten
 
-        mealViewModel.addNewMeal("20.12.2023", "Kakku", 3)
-        mealViewModel.addNewMeal("01.10.2022", "Porkkana", 7)
-        mealViewModel.addNewMeal("20.02.2021", "Kana", 2)
+        mealViewModel.addNewMeal("Kakku", 3)
+        mealViewModel.addNewMeal("Porkkana", 7)
+        mealViewModel.addNewMeal("Kana", 2)
 
     }
     fun goToAddScreen() {
