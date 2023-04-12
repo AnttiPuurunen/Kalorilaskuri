@@ -16,6 +16,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 import com.example.kalorilaskuri.viewmodels.MealViewModel
 import com.example.kalorilaskuri.viewmodels.MealViewModelFactory
+import android.widget.Toast
+
 
 class AddFragment : Fragment() {
     private lateinit var binding: FragmentAddBinding
@@ -86,13 +88,19 @@ class AddFragment : Fragment() {
         binding.tallennaButton.setOnClickListener {
             val foodName = binding.ruokaEditText.text.toString()
             val quantity = binding.maaraSeekBar.progress
-            val caloriesamount = binding.kalorimaaraeditTextNumber.text.toString().toInt()
+            val caloriesamount = binding.kalorimaaraeditTextNumber.text.toString()
             val calories = binding.kaloritextView.text.toString()
             val mealDate = getCurrentDate()
 
-            mealViewModel.addNewMeal(mealDate = mealDate, foodName = foodName, quantity = quantity, caloriesAmount = caloriesamount, calories = calories)
+            if (foodName.isBlank() || caloriesamount.isBlank() || calories.isBlank()) {
+                Toast.makeText(requireContext(), "Täytä kaikki kentät", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
+            mealViewModel.addNewMeal(mealDate = mealDate, foodName = foodName, quantity = quantity, caloriesAmount = caloriesamount.toInt(), calories = calories)
+            Toast.makeText(requireContext(), "Ruoka lisätty!", Toast.LENGTH_SHORT).show()
         }
+
 
         return view
     }
