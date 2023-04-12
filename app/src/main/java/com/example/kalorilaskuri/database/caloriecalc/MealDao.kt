@@ -3,6 +3,7 @@ package com.example.kalorilaskuri.database.caloriecalc
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
+import java.util.Date
 
 // Data Access Object-interface, jolla päästään käsiksi tietokannan tauluihin
 
