@@ -17,7 +17,7 @@ interface MealDao {
     fun getNumberOfMeals(): Int
 
     @Query("SELECT * FROM meal WHERE meal_date = :mealDate ORDER BY mealId ASC")
-    fun getMealsByDate(mealDate: Date): Flow<List<Meal>>
+    fun getMealsByDate(mealDate: String): Flow<List<Meal>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(meal: Meal)
