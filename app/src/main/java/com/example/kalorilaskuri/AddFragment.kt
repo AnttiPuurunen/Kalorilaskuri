@@ -10,16 +10,20 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.SeekBar
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import com.example.kalorilaskuri.databinding.FragmentAddBinding
 import java.text.SimpleDateFormat
 import java.util.*
 import com.example.kalorilaskuri.viewmodels.MealViewModel
-
+import com.example.kalorilaskuri.viewmodels.MealViewModelFactory
 
 class AddFragment : Fragment() {
     private lateinit var binding: FragmentAddBinding
-    private lateinit var mealViewModel: MealViewModel
+    private val mealViewModel: MealViewModel by activityViewModels {
+        MealViewModelFactory(
+            (activity?.application as CalorieApplication).database.mealDao()
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,8 +31,6 @@ class AddFragment : Fragment() {
     ): View {
         binding = FragmentAddBinding.inflate(inflater, container, false)
         val view = binding.root
-
-        mealViewModel = ViewModelProvider(requireActivity()).get(MealViewModel::class.java)
 
         binding.maaraSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
