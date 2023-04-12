@@ -29,6 +29,7 @@ class AddFragment : Fragment() {
     private lateinit var kalorimaaraeditTextNumber: EditText
     private lateinit var mealViewModel: MealViewModel
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

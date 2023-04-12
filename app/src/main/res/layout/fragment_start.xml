@@ -57,15 +57,6 @@
                 android:onClick="@{() -> startFragment.goToDetailsScreen()}"
                 android:text="@string/details_fragment" />
 
-            <Button
-                android:id="@+id/add_filler_data"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="Lisää dataa" />
-
-
-
         </LinearLayout>
     </ScrollView>
 </layout>
