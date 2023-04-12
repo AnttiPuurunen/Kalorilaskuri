@@ -42,17 +42,7 @@ class StartFragment : Fragment() {
             startFragment = this@StartFragment
         }
 
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        val adapter = MealAdapter {
-        }
-        binding.recyclerView.adapter = adapter
 
-        // Tarkkailee viewmodelin allItems-listaa, johon haetaan tietokannan tiedot ja päivittää tiedot eteenpäin recyclerviewin adapterille
-        mealViewModel.allItems.observe(this.viewLifecycleOwner) { items ->
-            items.let {
-                adapter.submitList(it)
-            }
-        }
         // Bindataan funktio Lisää dataa-nappiin käyttöliittymässä
         binding.addFillerData.setOnClickListener {
             //addFillerData()
