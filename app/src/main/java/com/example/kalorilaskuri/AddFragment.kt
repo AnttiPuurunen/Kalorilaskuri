@@ -16,6 +16,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 import com.example.kalorilaskuri.viewmodels.MealViewModel
 import com.example.kalorilaskuri.viewmodels.MealViewModelFactory
+import android.widget.Toast
+
 
 class AddFragment : Fragment() {
     private lateinit var binding: FragmentAddBinding
@@ -24,7 +26,6 @@ class AddFragment : Fragment() {
             (activity?.application as CalorieApplication).database.mealDao()
         )
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,11 +56,14 @@ class AddFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
-        val adapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_item, mutableListOf("Valitse"))
+        val adapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_item)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        adapter.add("Valitse")
         binding.spinner.adapter = adapter
 
         mealViewModel.allItems.observe(viewLifecycleOwner) { foods ->
+            adapter.clear()
+            adapter.add("Valitse")
             adapter.addAll(foods.map { "${it.foodName} ${it.caloriesAmount}" })
         }
 
@@ -84,16 +88,24 @@ class AddFragment : Fragment() {
                 // Do nothing
             }
         }
+
+
         binding.tallennaButton.setOnClickListener {
             val foodName = binding.ruokaEditText.text.toString()
             val quantity = binding.maaraSeekBar.progress
-            val caloriesamount = binding.kalorimaaraeditTextNumber.text.toString().toInt()
+            val caloriesamount = binding.kalorimaaraeditTextNumber.text.toString()
             val calories = binding.kaloritextView.text.toString()
             val mealDate = getCurrentDate()
 
-            mealViewModel.addNewMeal(mealDate = mealDate, foodName = foodName, quantity = quantity, caloriesAmount = caloriesamount, calories = calories)
+            if (foodName.isBlank() || caloriesamount.isBlank() || calories.isBlank()) {
+                Toast.makeText(requireContext(), "Täytä kaikki kentät", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
+            mealViewModel.addNewMeal(mealDate = mealDate, foodName = foodName, quantity = quantity, caloriesAmount = caloriesamount.toInt(), calories = calories)
+            Toast.makeText(requireContext(), "Ruoka lisätty!", Toast.LENGTH_SHORT).show()
         }
+
 
         return view
     }
@@ -105,7 +117,7 @@ class AddFragment : Fragment() {
         binding.kaloritextView.text = tulosText
     }
     private fun getCurrentDate(): String {
-        val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+        val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
         return dateFormat.format(Date())
     }
 }
