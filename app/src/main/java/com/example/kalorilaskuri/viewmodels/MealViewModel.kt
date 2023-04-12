@@ -9,9 +9,10 @@ import kotlinx.coroutines.launch
 // Viewmodel tiedonkäsittelyyn, tämän kautta kutsutaan MealDao-interfacen metodeja
 
 class MealViewModel(private val mealDao: MealDao): ViewModel() {
-
+    private val selectedMeal: MutableLiveData<Meal> = MutableLiveData()
     // Hakee listaan kaikki tietokannan tiedot
     val allItems: LiveData<List<Meal>> = mealDao.getAllMeals().asLiveData()
+
 
     fun getAllMeals(): Flow<List<Meal>>
             = mealDao.getAllMeals()
@@ -20,8 +21,8 @@ class MealViewModel(private val mealDao: MealDao): ViewModel() {
             = mealDao.getNumberOfMeals()
 
     // Otetaan vastaan uuden aterian tiedot ja haetaan uusi Meal-objekti. Tätä kutsutaan fragmentista.
-    fun addNewMeal(mealDate: String, foodName: String, quantity: Int, calories: String) {
-        val newMeal = getNewMealEntry(mealDate, foodName, quantity, calories)
+    fun addNewMeal(mealDate: String, foodName: String, quantity: Int, caloriesAmount: Int, calories: String) {
+        val newMeal = getNewMealEntry(mealDate, foodName, quantity, caloriesAmount, calories)
         insertMeal(newMeal)
     }
 
@@ -33,15 +34,22 @@ class MealViewModel(private val mealDao: MealDao): ViewModel() {
     }
 
     // Palauttaa uuden Meal-objektin käyttäjän antamilla tiedoilla.
-    private fun getNewMealEntry(mealDate: String, foodName: String, quantity: Int, calories: String): Meal {
+    private fun getNewMealEntry(mealDate: String, foodName: String, quantity: Int, caloriesAmount: Int, calories: String): Meal {
         return Meal(
             mealDate = mealDate,
             foodName = foodName,
             quantity = quantity,
+            caloriesAmount = caloriesAmount,
             calories = calories
         )
     }
+    fun setSelectedMeal(meal: Meal) {
+        selectedMeal.value = meal
+    }
 
+    fun getSelectedMeal(): LiveData<Meal> {
+        return selectedMeal
+    }
 }
 
 class MealViewModelFactory(

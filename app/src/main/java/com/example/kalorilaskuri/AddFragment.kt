@@ -1,52 +1,42 @@
 package com.example.kalorilaskuri
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.SeekBar
-import android.widget.TextView
-import android.text.Editable
-import android.text.TextWatcher
-import androidx.lifecycle.ViewModelProvider
-import com.example.kalorilaskuri.viewmodels.MealViewModel
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import com.example.kalorilaskuri.databinding.FragmentAddBinding
 import java.text.SimpleDateFormat
 import java.util.*
-
-
-data class meal(val mealDate: String, val foodName: String, val quantity: Int, val calories: String)
+import com.example.kalorilaskuri.viewmodels.MealViewModel
+import com.example.kalorilaskuri.viewmodels.MealViewModelFactory
 
 class AddFragment : Fragment() {
-    /**private lateinit var ruokaViewModel: RuokaViewModel*/
-    private lateinit var maaraSeekBar1: TextView
-    private lateinit var maaraSeekBar: SeekBar
-    private lateinit var ruokaEditText: TextView
-    private lateinit var tallennaButton: Button
-    private lateinit var kaloritextView: TextView
-    private lateinit var kalorimaaraeditTextNumber: EditText
-    private lateinit var mealViewModel: MealViewModel
+    private lateinit var binding: FragmentAddBinding
+    private val mealViewModel: MealViewModel by activityViewModels {
+        MealViewModelFactory(
+            (activity?.application as CalorieApplication).database.mealDao()
+        )
+    }
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_add, container, false)
-        maaraSeekBar1 = view.findViewById(R.id.maaraSeekBar1)
-        maaraSeekBar = view.findViewById(R.id.maaraSeekBar)
-        ruokaEditText = view.findViewById(R.id.ruokaEditText)
-        tallennaButton = view.findViewById(R.id.tallennaButton)
-        kaloritextView = view.findViewById(R.id.kaloritextView)
-        kalorimaaraeditTextNumber = view.findViewById(R.id.kalorimaaraeditTextNumber)
-        mealViewModel = ViewModelProvider(requireActivity()).get(MealViewModel::class.java)
+    ): View {
+        binding = FragmentAddBinding.inflate(inflater, container, false)
+        val view = binding.root
 
-        maaraSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        binding.maaraSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 val maaraText = "$progress g"
-                maaraSeekBar1.text = maaraText
+                binding.maaraSeekBar1.text = maaraText
                 laskeKalorit()
             }
 
@@ -55,33 +45,64 @@ class AddFragment : Fragment() {
             override fun onStopTrackingTouch(seekBar: SeekBar) {}
         })
 
-        kalorimaaraeditTextNumber.addTextChangedListener(object : TextWatcher {
+        binding.kalorimaaraeditTextNumber.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 laskeKalorit()
             }
+
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
-        tallennaButton.setOnClickListener {
-            val foodName = ruokaEditText.text.toString()
-            val quantity = maaraSeekBar.progress
-            val calories = kaloritextView.text.toString()
+        val adapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_item, mutableListOf("Valitse"))
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinner.adapter = adapter
+
+        mealViewModel.allItems.observe(viewLifecycleOwner) { foods ->
+            adapter.addAll(foods.map { "${it.foodName} ${it.caloriesAmount}" })
+        }
+
+        binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                if (position == 0) {
+                    binding.ruokaEditText.setText("")
+                    binding.kalorimaaraeditTextNumber.setText("")
+                } else {
+                    val meal = mealViewModel.allItems.value?.get(position - 1)
+                    binding.ruokaEditText.setText(meal?.foodName)
+                    binding.kalorimaaraeditTextNumber.setText(meal?.caloriesAmount?.toString())
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Do nothing
+            }
+        }
+        binding.tallennaButton.setOnClickListener {
+            val foodName = binding.ruokaEditText.text.toString()
+            val quantity = binding.maaraSeekBar.progress
+            val caloriesamount = binding.kalorimaaraeditTextNumber.text.toString().toInt()
+            val calories = binding.kaloritextView.text.toString()
             val mealDate = getCurrentDate()
 
-            //ruokaViewModel.insertRuoka(ruoka)
-            mealViewModel.addNewMeal(mealDate = mealDate, foodName = foodName, quantity = quantity, calories = calories)
+            mealViewModel.addNewMeal(mealDate = mealDate, foodName = foodName, quantity = quantity, caloriesAmount = caloriesamount, calories = calories)
 
         }
+
         return view
     }
     private fun laskeKalorit() {
-        val maara = maaraSeekBar.progress
-        val arvo = kalorimaaraeditTextNumber.text.toString().toDoubleOrNull() ?: 0.0
+        val maara = binding.maaraSeekBar.progress
+        val arvo = binding.kalorimaaraeditTextNumber.text.toString().toDoubleOrNull() ?: 0.0
         val tulos = maara * arvo / 100
         val tulosText = "$tulos kcal"
-        kaloritextView.text = tulosText
+        binding.kaloritextView.text = tulosText
     }
     private fun getCurrentDate(): String {
         val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
