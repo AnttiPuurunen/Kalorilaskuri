@@ -58,27 +58,35 @@ class AddFragment : Fragment() {
 
         val adapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_item)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        adapter.add("Valitse")
+        val defaultItems = listOf("Valitse", "Liha 300", "Kala 250", "Kana 200")
+        adapter.addAll(defaultItems)
         binding.spinner.adapter = adapter
 
         mealViewModel.allItems.observe(viewLifecycleOwner) { foods ->
             adapter.clear()
-            adapter.add("Valitse")
-            adapter.addAll(foods.map { "${it.foodName} ${it.caloriesAmount}" })
+            adapter.addAll(defaultItems)
+            val foodItems = foods.map { "${it.foodName} ${it.caloriesAmount}" }.distinct()
+            adapter.addAll(foodItems.filterNot { defaultItems.contains(it) })
         }
 
+        binding.spinner.setSelection(0)
+
         binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 if (position == 0) {
-                    binding.ruokaEditText.setText("")
-                    binding.kalorimaaraeditTextNumber.setText("")
+                    if (binding.kalorimaaraeditTextNumber.text.toString() != "") {
+                        binding.kalorimaaraeditTextNumber.setText("")
+                    }
+                    if (binding.ruokaEditText.text.toString() != "") {
+                        binding.ruokaEditText.setText("")
+                    }
+                } else if (position <= 3) {
+                    val defaultValues = parent.getItemAtPosition(position).toString().split(" ")
+                    binding.ruokaEditText.setText(defaultValues[0])
+                    binding.kalorimaaraeditTextNumber.setText(defaultValues[1])
                 } else {
-                    val meal = mealViewModel.allItems.value?.get(position - 1)
+                    // Set values from the selected meal item
+                    val meal = mealViewModel.allItems.value?.get(position - 4)
                     binding.ruokaEditText.setText(meal?.foodName)
                     binding.kalorimaaraeditTextNumber.setText(meal?.caloriesAmount?.toString())
                 }
@@ -88,6 +96,9 @@ class AddFragment : Fragment() {
                 // Do nothing
             }
         }
+
+
+
 
 
         binding.tallennaButton.setOnClickListener {
