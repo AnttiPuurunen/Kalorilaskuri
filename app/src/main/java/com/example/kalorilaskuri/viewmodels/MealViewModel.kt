@@ -43,7 +43,7 @@ class MealViewModel(private val mealDao: MealDao): ViewModel() {
     }
 
     // Otetaan vastaan uuden aterian tiedot ja haetaan uusi Meal-objekti. Tätä kutsutaan fragmentista.
-    fun addNewMeal(mealDate: String, foodName: String, quantity: Int, caloriesAmount: Int, calories: String) {
+    fun addNewMeal(mealDate: String, foodName: String, quantity: Int, caloriesAmount: Int, calories: Int) {
         val newMeal = getNewMealEntry(mealDate, foodName, quantity, caloriesAmount, calories)
         insertMeal(newMeal)
     }
@@ -56,7 +56,7 @@ class MealViewModel(private val mealDao: MealDao): ViewModel() {
     }
 
     // Palauttaa uuden Meal-objektin käyttäjän antamilla tiedoilla.
-    private fun getNewMealEntry(mealDate: String, foodName: String, quantity: Int, caloriesAmount: Int, calories: String): Meal {
+    private fun getNewMealEntry(mealDate: String, foodName: String, quantity: Int, caloriesAmount: Int, calories: Int): Meal {
         return Meal(
             mealDate = mealDate,
             foodName = foodName,

@@ -17,5 +17,5 @@ data class Meal(
     @NonNull @ColumnInfo(name = "food_name") val foodName: String,
     @NonNull @ColumnInfo(name= "quantity") val quantity: Int,
     @NonNull @ColumnInfo(name= "calories_amount") val caloriesAmount: Int,
-    @NonNull @ColumnInfo(name = "calories") val calories: String
+    @NonNull @ColumnInfo(name = "calories") val calories: Int
 )
