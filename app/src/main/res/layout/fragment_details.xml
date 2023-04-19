@@ -5,9 +5,11 @@
     tools:context=".DetailsFragment">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.example.kalorilaskuri.viewmodels.MealViewModel" />
+
         <variable
             name="startFragment"
             type="com.example.kalorilaskuri.DetailsFragment" />
@@ -34,22 +36,53 @@
                 app:srcCompat="@drawable/kalorilaskuri_placeholder" />
 
             <TextView
-                android:id="@+id/count_of_meals_textview"
+                android:id="@+id/meals_list_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:textSize="20sp"
-                android:text="@string/details_fragment" />
+                android:text="@string/details_fragment"
+                android:textSize="20sp" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp">
 
+                <TextView
+                    android:id="@+id/date_header_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:text="@string/date_header"
+                    android:textSize="20sp" />
 
+                <TextView
+                    android:id="@+id/count_of_meals_header_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:text="@string/count_of_meals_header"
+                    android:textSize="20sp" />
 
+                <TextView
+                    android:id="@+id/total_calories_header_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:text="@string/total_calories_header"
+                    android:textSize="20sp" />
 
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                tools:listitem="@layout/meal_item" />
 
         </LinearLayout>
     </ScrollView>

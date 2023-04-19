@@ -34,7 +34,7 @@
                 app:srcCompat="@drawable/kalorilaskuri_placeholder" />
 
             <TextView
-                android:id="@+id/count_of_meals_textview"
+                android:id="@+id/calorie_calculator_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
