@@ -46,8 +46,7 @@ class DetailsFragment : Fragment() {
         // Tarkkailee viewmodelin mealsByDate-listaa, joka sisältää muokattuja MealExpanded-luokan objekteja ja päivittää tiedot eteenpäin recyclerviewin adapterille
         mealViewModel.mealsByDate.observe(this.viewLifecycleOwner) { items ->
             items.let {
-                val reverseList = it.reversed()
-                adapter.submitList(reverseList.distinctBy { it.date })
+                adapter.submitList(it.distinctBy { it.date })
             }
         }
     }

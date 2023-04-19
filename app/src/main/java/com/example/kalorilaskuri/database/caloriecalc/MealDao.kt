@@ -10,13 +10,13 @@ import java.util.Date
 @Dao
 interface MealDao {
 
-    @Query("SELECT * FROM meal ORDER BY mealId ASC")
+    @Query("SELECT * FROM meal ORDER BY mealId DESC")
     fun getAllMeals(): Flow<List<Meal>>
 
     @Query("SELECT COUNT(*) FROM meal WHERE meal_date = :mealDate")
     fun getNumberOfMeals(mealDate: String): Int
 
-    @Query("SELECT * FROM meal WHERE meal_date = :mealDate ORDER BY mealId ASC")
+    @Query("SELECT * FROM meal WHERE meal_date = :mealDate ORDER BY mealId DESC")
     fun getMealsByDate(mealDate: String): List<Meal>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)

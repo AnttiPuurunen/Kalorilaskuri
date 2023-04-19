@@ -57,7 +57,6 @@
                     android:layout_weight="1"
                     android:text="@string/date_header"
                     android:textSize="20sp" />
-
                 <TextView
                     android:id="@+id/count_of_meals_header_textview"
                     android:layout_width="wrap_content"
@@ -66,7 +65,6 @@
                     android:layout_weight="1"
                     android:text="@string/count_of_meals_header"
                     android:textSize="20sp" />
-
                 <TextView
                     android:id="@+id/total_calories_header_textview"
                     android:layout_width="wrap_content"
@@ -77,6 +75,10 @@
                     android:textSize="20sp" />
 
             </LinearLayout>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"
