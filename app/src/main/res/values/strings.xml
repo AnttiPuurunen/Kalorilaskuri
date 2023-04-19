@@ -6,4 +6,6 @@
     <string name="date_header">Päivämäärä</string>
     <string name="count_of_meals_header">Syödyt ateriat</string>
     <string name="total_calories_header">Kilokalorit</string>
+    <string name="primary_color">Primary color</string>
+    <string name="secondary_color">Secondary color</string>
 </resources>

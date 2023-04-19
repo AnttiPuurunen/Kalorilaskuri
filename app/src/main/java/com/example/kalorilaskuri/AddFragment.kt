@@ -19,8 +19,12 @@ import com.example.kalorilaskuri.viewmodels.MealViewModelFactory
 import android.widget.Toast
 
 
+
 class AddFragment : Fragment() {
-    private lateinit var binding: FragmentAddBinding
+
+    private var _binding: FragmentAddBinding? = null
+    private val binding get() = _binding!!
+
     private val mealViewModel: MealViewModel by activityViewModels {
         MealViewModelFactory(
             (activity?.application as CalorieApplication).database.mealDao()
@@ -31,7 +35,7 @@ class AddFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentAddBinding.inflate(inflater, container, false)
+        _binding = FragmentAddBinding.inflate(inflater, container, false)
         val view = binding.root
 
         binding.maaraSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
@@ -71,7 +75,7 @@ class AddFragment : Fragment() {
 
         binding.spinner.setSelection(0)
 
-        binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 if (position == 0) {
                     if (binding.kalorimaaraeditTextNumber.text.toString() != "") {
@@ -95,7 +99,7 @@ class AddFragment : Fragment() {
             override fun onNothingSelected(parent: AdapterView<*>) {
                 // Do nothing
             }
-        }
+        }.also { binding.spinner.onItemSelectedListener = it }
 
 
 
