@@ -105,10 +105,10 @@ class AddFragment : Fragment() {
             val foodName = binding.ruokaEditText.text.toString()
             val quantity = binding.maaraSeekBar.progress
             val caloriesamount = binding.kalorimaaraeditTextNumber.text.toString()
-            val calories = binding.kaloritextView.text.toString()
+            val calories = calculatedCalories
             val mealDate = getCurrentDate()
 
-            if (foodName.isBlank() || caloriesamount.isBlank() || calories.isBlank()) {
+            if (foodName.isBlank() || caloriesamount.isBlank()) {
                 Toast.makeText(requireContext(), "Täytä kaikki kentät", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -118,15 +118,25 @@ class AddFragment : Fragment() {
         }
 
 
+
         return view
     }
+    private var calculatedCalories = 0
     private fun laskeKalorit() {
         val maara = binding.maaraSeekBar.progress
-        val arvo = binding.kalorimaaraeditTextNumber.text.toString().toDoubleOrNull() ?: 0.0
-        val tulos = maara * arvo / 100
-        val tulosText = "$tulos kcal"
+        val arvoString = binding.kalorimaaraeditTextNumber.text.toString()
+
+        if (arvoString.isEmpty()) {
+            binding.kaloritextView.text = "0 kcal"
+            return
+        }
+
+        val arvo = arvoString.toInt()
+        calculatedCalories = maara * arvo / 100
+        val tulosText = "$calculatedCalories kcal"
         binding.kaloritextView.text = tulosText
     }
+
     private fun getCurrentDate(): String {
         val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
         return dateFormat.format(Date())

@@ -125,6 +125,7 @@
         android:layout_width="132dp"
         android:layout_height="wrap_content"
 
+        android:minHeight="48dp"
         app:layout_constraintBottom_toTopOf="@+id/nimiTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
