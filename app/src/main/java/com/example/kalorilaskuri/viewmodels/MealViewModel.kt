@@ -29,7 +29,7 @@ class MealViewModel(private val mealDao: MealDao): ViewModel() {
                 val date = it.mealDate
                 val meals = list.filter { it.mealDate == date }
                 var cals = 0
-                meals.forEach { meal -> cals += meal.caloriesAmount }
+                meals.forEach { meal -> cals += meal.calories }
                     val temp = MealExpanded(
                         date = it.mealDate,
                         totalCal = cals,
