@@ -9,4 +9,6 @@
     <string name="total_calories"> kcal</string>
     <string name="show_calendar">Näytä kalenteri</string>
     <string name="no_data_for_date">Ei tietoja</string>
+    <string name="primary_color">Primary color</string>
+    <string name="secondary_color">Secondary color</string>
 </resources>
