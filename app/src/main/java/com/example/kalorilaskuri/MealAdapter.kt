@@ -42,7 +42,10 @@ class MealAdapter(
                 mealDate.text = meal.date
                 countOfMeals.text = meal.mealsList.size.toString()
                 totalCalories.text = meal.totalCal.toString()
+                if (meal.totalCal > 2000) {
 
+                        binding.totalCalories.setText("Kalorit ylittyneet")
+                    }
                 //recyclerViewMealsByDate.layoutManager = LinearLayoutManager()
                 val mealsByDateAdapter = MealsByDateAdapter {
 

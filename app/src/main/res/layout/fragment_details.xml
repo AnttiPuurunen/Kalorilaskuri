@@ -2,13 +2,16 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".DetailsFragment">
+    tools:context=".DetailsFragment"
+    tools:ignore="ExtraText">
+
 
     <data>
 
         <variable
             name="viewModel"
-            type="com.example.kalorilaskuri.viewmodels.MealViewModel" />
+            type="com.example.kalorilaskuri.viewmodels.MealViewModel"
+            android:visibility="visible" />
 
         <variable
             name="startFragment"
@@ -22,6 +25,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#EDE59B"
             android:orientation="vertical"
             android:padding="16dp">
 
@@ -61,6 +65,7 @@
                     android:layout_weight="1"
                     android:text="@string/date_header"
                     android:textSize="20sp" />
+
                 <TextView
                     android:id="@+id/count_of_meals_header_textview"
                     android:layout_width="wrap_content"
@@ -69,6 +74,7 @@
                     android:layout_weight="1"
                     android:text="@string/count_of_meals_header"
                     android:textSize="20sp" />
+
                 <TextView
                     android:id="@+id/total_calories_header_textview"
                     android:layout_width="wrap_content"
@@ -76,6 +82,8 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_weight="1"
                     android:text="@string/total_calories_header"
+
+
                     android:textSize="20sp" />
 
             </LinearLayout>
