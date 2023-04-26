@@ -39,6 +39,8 @@ class MealsByDateAdapter(
             binding.apply {
                 mealName.text = meal.foodName
                 calories.text = meal.calories.toString()
+
+
             }
         }
 

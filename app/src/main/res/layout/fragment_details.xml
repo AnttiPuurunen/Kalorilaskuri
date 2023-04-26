@@ -79,6 +79,7 @@
                     android:layout_weight="1"
                     android:text="@string/total_calories_header"
 
+
                     android:textSize="20sp" />
 
             </LinearLayout>

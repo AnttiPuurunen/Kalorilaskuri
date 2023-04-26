@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         setupActionBarWithNavController(navController)
 
         // Alla oleva oli tilapaisratkaisu tietokanta-tiedoston tuhoamiseen
-        //deleteDatabase("calorie_database")
+        deleteDatabase("calorie_database")
     }
 
     override fun onSupportNavigateUp(): Boolean {
