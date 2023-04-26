@@ -25,23 +25,27 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <ImageView
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:importantForAccessibility="no"
-                android:scaleType="center"
-                app:srcCompat="@drawable/kalorilaskuri_placeholder" />
-
-            <TextView
-                android:id="@+id/meals_list_textview"
+            <Button
+                android:id="@+id/show_calendar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="@string/details_fragment"
-                android:textSize="20sp" />
+                android:text="@string/show_calendar" />
+
+            <CalendarView
+                android:id="@+id/calendarView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chosen_date_chip"
+                style="@style/Widget.MaterialComponents.Chip.Entry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                app:checkedIconVisible="false" />
 
             <LinearLayout
                 android:layout_width="match_parent"

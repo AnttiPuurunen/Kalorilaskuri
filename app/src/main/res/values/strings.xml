@@ -6,4 +6,7 @@
     <string name="date_header">Päivämäärä</string>
     <string name="count_of_meals_header">Syödyt ateriat</string>
     <string name="total_calories_header">Kilokalorit</string>
+    <string name="total_calories"> kcal</string>
+    <string name="show_calendar">Näytä kalenteri</string>
+    <string name="no_data_for_date">Ei tietoja</string>
 </resources>

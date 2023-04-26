@@ -1,15 +1,12 @@
 package com.example.kalorilaskuri
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.res.Configuration
 import android.os.Bundle
-import androidx.fragment.app.activityViewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.kalorilaskuri.databinding.FragmentStartBinding
-import com.example.kalorilaskuri.viewmodels.MealViewModel
-import com.example.kalorilaskuri.viewmodels.MealViewModelFactory
+import java.util.*
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
@@ -24,6 +21,16 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         val navController = navHostFragment.navController
 
         setupActionBarWithNavController(navController)
+
+        val locale = Locale("fi")
+        Locale.setDefault(locale)
+
+        val config = Configuration()
+        config.locale = locale
+        baseContext.resources.updateConfiguration(
+            config,
+            baseContext.resources.displayMetrics
+        )
 
         // Alla oleva oli tilapaisratkaisu tietokanta-tiedoston tuhoamiseen
         //deleteDatabase("calorie_database")

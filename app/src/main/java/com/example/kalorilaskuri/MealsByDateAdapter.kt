@@ -38,7 +38,7 @@ class MealsByDateAdapter(
         fun bind(meal: Meal) {
             binding.apply {
                 mealName.text = meal.foodName
-                calories.text = meal.calories.toString()
+                calories.text = meal.calories.toString() + itemView.context.getString(R.string.total_calories)
             }
         }
 

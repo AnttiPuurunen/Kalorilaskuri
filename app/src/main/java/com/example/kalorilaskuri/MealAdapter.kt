@@ -47,13 +47,26 @@ class MealAdapter(
                 val mealsByDateAdapter = MealsByDateAdapter {
 
                 }
+
                 recyclerViewMealsByDate.adapter = mealsByDateAdapter
                 recyclerViewMealsByDate.visibility = View.GONE
-                mealsByDateAdapter.submitList(meal.mealsList)
+                emptyListTextview.visibility = View.GONE
+
                 itemView.setOnClickListener {
                     expand = !expand
-                    recyclerViewMealsByDate.visibility =
-                        if (expand) View.VISIBLE else View.GONE
+
+                    if (meal.mealsList.isEmpty() && expand){
+                        recyclerViewMealsByDate.visibility = View.GONE
+                        emptyListTextview.visibility = View.VISIBLE
+                    } else if (meal.mealsList.isNotEmpty() && expand){
+                        mealsByDateAdapter.submitList(meal.mealsList)
+                        recyclerViewMealsByDate.visibility = View.VISIBLE
+                        emptyListTextview.visibility = View.GONE
+                    } else {
+                        recyclerViewMealsByDate.visibility = View.GONE
+                        emptyListTextview.visibility = View.GONE
+                    }
+
                 }
             }
 

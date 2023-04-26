@@ -1,16 +1,20 @@
 package com.example.kalorilaskuri
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.kalorilaskuri.database.caloriecalc.MealExpanded
 import com.example.kalorilaskuri.databinding.FragmentDetailsBinding
 import com.example.kalorilaskuri.viewmodels.MealViewModel
 import com.example.kalorilaskuri.viewmodels.MealViewModelFactory
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.kalorilaskuri.database.caloriecalc.MealExpanded
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.util.*
 
 
 class DetailsFragment : Fragment() {
@@ -32,7 +36,8 @@ class DetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        var chosenDate = ""
+        var showCalendar = false
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             var detailsFragment = this@DetailsFragment
@@ -43,10 +48,61 @@ class DetailsFragment : Fragment() {
         }
         binding.recyclerView.adapter = adapter
 
+        binding.calendarView.visibility = View.GONE
+        binding.calendarView.maxDate = System.currentTimeMillis()
+
+        binding.showCalendar.setOnClickListener {
+            showCalendar = !showCalendar
+            binding.calendarView.visibility =
+                if (showCalendar) View.VISIBLE else View.GONE
+        }
+
+        binding.chosenDateChip.visibility = View.GONE
+
+        binding.calendarView
+            .setOnDateChangeListener{ _, year, month, dayOfMonth ->
+                    val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+                    val c = Calendar.getInstance()
+                    c.set(year, month, dayOfMonth)
+                    chosenDate = dateFormat.format(c.timeInMillis)
+                    observeViewModelAgain(adapter, chosenDate)
+                    binding.chosenDateChip.apply {
+                        text = chosenDate
+                        visibility = View.VISIBLE
+                    }
+                }
+
         // Tarkkailee viewmodelin mealsByDate-listaa, joka sisältää muokattuja MealExpanded-luokan objekteja ja päivittää tiedot eteenpäin recyclerviewin adapterille
         mealViewModel.mealsByDate.observe(this.viewLifecycleOwner) { items ->
             items.let {
-                adapter.submitList(it.distinctBy { it.date })
+                if (chosenDate == "") {
+                    adapter.submitList(it.distinctBy { it.date })
+                } else {
+                    val list = it.filter { it.date == chosenDate }
+                    adapter.submitList(list.distinctBy { it.date })
+                }
+            }
+        }
+
+        binding.chosenDateChip.setOnClickListener {
+            if (chosenDate != "") {
+                chosenDate = ""
+                observeViewModelAgain(adapter, chosenDate)
+                binding.chosenDateChip.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun observeViewModelAgain(adapter: MealAdapter, chosenDate: String) {
+        mealViewModel.mealsByDate.removeObservers(this)
+        mealViewModel.mealsByDate.observe(this.viewLifecycleOwner) { items ->
+            items.let {
+                if (chosenDate == "") {
+                    adapter.submitList(it.distinctBy { it.date })
+                } else {
+                    val list = it.filter { it.date == chosenDate }
+                    adapter.submitList(list.distinctBy { it.date })
+                }
             }
         }
     }
