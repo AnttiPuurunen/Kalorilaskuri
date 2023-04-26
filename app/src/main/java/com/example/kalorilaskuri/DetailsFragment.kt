@@ -26,6 +26,7 @@ class DetailsFragment : Fragment() {
             (activity?.application as CalorieApplication).database.mealDao()
         )
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -42,9 +43,9 @@ class DetailsFragment : Fragment() {
             lifecycleOwner = viewLifecycleOwner
             var detailsFragment = this@DetailsFragment
         }
-
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         val adapter = MealAdapter {
+
         }
         binding.recyclerView.adapter = adapter
 

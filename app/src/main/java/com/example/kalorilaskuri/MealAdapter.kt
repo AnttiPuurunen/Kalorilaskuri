@@ -14,6 +14,11 @@ import com.example.kalorilaskuri.databinding.MealItemBinding
 class MealAdapter(
     private val onItemClicked: (MealExpanded) -> Unit
 ) : ListAdapter<MealExpanded, MealAdapter.MealExpandedViewHolder>(DiffCallback) {
+    private var kalorilimit: Float = 0f
+
+    fun setKaloriLimit(limit: Float) {
+        kalorilimit = limit
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MealExpandedViewHolder {
         val viewHolder = MealExpandedViewHolder(
             MealItemBinding.inflate(
@@ -30,19 +35,19 @@ class MealAdapter(
     }
 
     override fun onBindViewHolder(holder: MealExpandedViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), kalorilimit)
     }
 
     class MealExpandedViewHolder(private var binding: MealItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         private var expand = false
         // Bindataan näytettävän listan kentät käyttöliittymässä Meal-dataluokan properteihin
-        fun bind(meal: MealExpanded) {
+        fun bind(meal: MealExpanded, kalorilimit: Float) {
             binding.apply {
                 mealDate.text = meal.date
                 countOfMeals.text = meal.mealsList.size.toString()
                 totalCalories.text = meal.totalCal.toString()
-                if (meal.totalCal > 2000) {
+                if (meal.totalCal > kalorilimit) {
 
                         binding.totalCalories.setText("Kalorit ylittyneet")
                     }
