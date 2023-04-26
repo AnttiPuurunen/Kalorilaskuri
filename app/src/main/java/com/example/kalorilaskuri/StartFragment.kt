@@ -7,11 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.kalorilaskuri.databinding.FragmentStartBinding
+import android.content.Context
 
 class StartFragment : Fragment() {
 
     private var _binding: FragmentStartBinding? = null
     private val binding get() = _binding!!
+    private val sharedPreferences by lazy { requireContext().getSharedPreferences("myPrefs", Context.MODE_PRIVATE) }
+    private var savedValue = 0f
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -19,6 +22,7 @@ class StartFragment : Fragment() {
     ): View? {
         val fragmentBinding = FragmentStartBinding.inflate(inflater, container, false)
         _binding = fragmentBinding
+        savedValue = sharedPreferences.getFloat("kaloriLimit", 0f)
         return fragmentBinding.root
     }
 
@@ -28,8 +32,16 @@ class StartFragment : Fragment() {
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             startFragment = this@StartFragment
+            kaloriLimit.setText(savedValue.toString())
         }
 
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        val editor = sharedPreferences.edit()
+        editor.putFloat("kaloriLimit", binding.kaloriLimit.text.toString().toFloatOrNull() ?: 0f)
+        editor.apply()
     }
 
     fun goToAddScreen() {

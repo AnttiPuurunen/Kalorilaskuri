@@ -7,11 +7,11 @@
     tools:context=".AddFragment">
 
     <!-- TODO: Update blank fragment layout -->
+
     <TextView
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#B6E9EF"
         android:text="@string/add_fragment"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="28dp" />
@@ -24,20 +24,21 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/ruokaEditText"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/spinner"
+        app:layout_constraintTop_toBottomOf="@+id/spinner"
         app:layout_constraintVertical_bias="0.5" />
 
     <EditText
         android:id="@+id/ruokaEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="624dp"
+        android:layout_height="49dp"
         android:hint="Syötä ruuan nimi"
         android:inputType="text"
         android:minHeight="48dp"
         app:layout_constraintBottom_toTopOf="@+id/maaraTextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nimiTextView"
         app:layout_constraintVertical_bias="0.5" />
@@ -51,20 +52,20 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/maaraSeekBar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ruokaEditText"
         app:layout_constraintVertical_bias="0.5" />
 
     <SeekBar
         android:id="@+id/maaraSeekBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="524dp"
+        android:layout_height="44dp"
         android:layout_below="@+id/maaraTextView"
         android:max="3000"
         android:progress="0"
-        app:layout_constraintBottom_toTopOf="@+id/maaraSeekBar1"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/kalorimaaraeditTextNumber"
+        app:layout_constraintEnd_toStartOf="@+id/maaraSeekBar1"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/maaraTextView"
@@ -76,11 +77,11 @@
         android:layout_height="wrap_content"
         android:text="0 g"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/kalorimaaraeditTextNumber"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/maaraSeekBar"
+        app:layout_constraintStart_toEndOf="@+id/maaraSeekBar"
+        app:layout_constraintTop_toBottomOf="@+id/ruokaEditText"
         app:layout_constraintVertical_bias="0.5" />
 
     <EditText
@@ -91,11 +92,11 @@
         android:hint="Syötä kalorit"
         android:inputType="number"
         android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/kaloritextView"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/kaloritextView"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/maaraSeekBar1"
+        app:layout_constraintTop_toBottomOf="@+id/maaraSeekBar"
         app:layout_constraintVertical_bias="0.5" />
 
     <TextView
@@ -103,10 +104,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0 kcal"
-        app:layout_constraintBottom_toTopOf="@+id/tallennaButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/kalorimaaraeditTextNumber"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tallennaButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/kalorimaaraeditTextNumber"
+        app:layout_constraintTop_toBottomOf="@+id/maaraSeekBar"
         app:layout_constraintVertical_bias="0.5" />
 
     <Button
@@ -117,8 +119,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/kaloritextView"
+        app:layout_constraintStart_toEndOf="@+id/kaloritextView"
+        app:layout_constraintTop_toBottomOf="@+id/maaraSeekBar"
         app:layout_constraintVertical_bias="0.5" />
 
     <Spinner
@@ -129,10 +131,10 @@
         android:minHeight="48dp"
         app:layout_constraintBottom_toTopOf="@+id/nimiTextView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5"
-        tools:ignore="SpeakableTextPresentCheck" />
+        app:layout_constraintVertical_bias="0.5" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"

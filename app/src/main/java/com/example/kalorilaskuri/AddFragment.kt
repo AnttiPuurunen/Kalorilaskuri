@@ -101,10 +101,6 @@ class AddFragment : Fragment() {
             }
         }.also { binding.spinner.onItemSelectedListener = it }
 
-
-
-
-
         binding.tallennaButton.setOnClickListener {
             val foodName = binding.ruokaEditText.text.toString()
             val quantity = binding.maaraSeekBar.progress
@@ -120,7 +116,6 @@ class AddFragment : Fragment() {
             mealViewModel.addNewMeal(mealDate = mealDate, foodName = foodName, quantity = quantity, caloriesAmount = caloriesamount.toInt(), calories = calories)
             Toast.makeText(requireContext(), "Ruoka lisätty!", Toast.LENGTH_SHORT).show()
         }
-
 
 
         return view
