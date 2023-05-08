@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.*
 import android.content.Context
+import android.util.Log
 
 class DetailsFragment : Fragment() {
 
@@ -24,7 +25,6 @@ class DetailsFragment : Fragment() {
 
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
-    private var emptyList: Boolean = false
     private val mealViewModel: MealViewModel by activityViewModels {
         MealViewModelFactory(
             (activity?.application as CalorieApplication).database.mealDao()
@@ -46,7 +46,6 @@ class DetailsFragment : Fragment() {
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             var detailsFragment = this@DetailsFragment
-            emptyList = emptyList
         }
 
         val prefs = requireActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -127,26 +126,31 @@ class DetailsFragment : Fragment() {
         mealViewModel.mealsByDate.removeObservers(this)
         mealViewModel.mealsByDate.observe(this.viewLifecycleOwner) { items ->
             items.let {
-                if (it.isNullOrEmpty()) {
-                    binding.apply {
-                        emptyListTextview.visibility = View.VISIBLE
-                        recyclerView.visibility = View.GONE
-                        emptyList = true
-                    }
-                } else if (chosenDate == "") {
+                 if (chosenDate == "") {
                     adapter.submitList(it.distinctBy { it.date })
+                    if (it.isNullOrEmpty()) {
+                        binding.apply {
+                            emptyListTextview.visibility = View.VISIBLE
+                            recyclerView.visibility = View.GONE
+                        }
+                    }
                     binding.apply {
                         emptyListTextview.visibility = View.GONE
                         recyclerView.visibility = View.VISIBLE
-                        emptyList = false
                     }
                 } else {
                     val list = it.filter { it.date == chosenDate }
                     adapter.submitList(list.distinctBy { it.date })
-                    binding.apply {
-                        emptyListTextview.visibility = View.GONE
-                        recyclerView.visibility = View.VISIBLE
-                        emptyList = false
+                    if (list.isEmpty()) {
+                        binding.apply {
+                            emptyListTextview.visibility = View.VISIBLE
+                            recyclerView.visibility = View.GONE
+                        }
+                    } else {
+                        binding.apply {
+                            emptyListTextview.visibility = View.GONE
+                            recyclerView.visibility = View.VISIBLE
+                        }
                     }
                 }
             }

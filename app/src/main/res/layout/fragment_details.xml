@@ -13,7 +13,6 @@
         <variable
             name="detailsFragment"
             type="com.example.kalorilaskuri.DetailsFragment" />
-        <import type="android.view.View"/>
     </data>
 
     <ScrollView

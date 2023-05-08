@@ -72,6 +72,10 @@ class MealViewModel(private val mealDao: MealDao): ViewModel() {
     fun getSelectedMeal(): LiveData<Meal> {
         return selectedMeal
     }
+
+    fun getItemCount(): Int {
+        return mealsByDate.value!!.size
+    }
 }
 
 class MealViewModelFactory(
