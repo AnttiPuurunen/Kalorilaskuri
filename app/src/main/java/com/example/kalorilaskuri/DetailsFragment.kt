@@ -49,16 +49,41 @@ class DetailsFragment : Fragment() {
         }
         binding.recyclerView.adapter = adapter
 
-        binding.calendarView.visibility = View.GONE
-        binding.calendarView.maxDate = System.currentTimeMillis()
+        binding.calendarView.apply {
+            visibility = View.GONE
+            maxDate = System.currentTimeMillis()
+        }
+
+        binding.showCalendar.setCompoundDrawablesWithIntrinsicBounds(
+            R.drawable.baseline_arrow_drop_down_24_white,
+            0,
+            0,
+            0
+        )
 
         binding.showCalendar.setOnClickListener {
             showCalendar = !showCalendar
             binding.calendarView.visibility =
                 if (showCalendar) View.VISIBLE else View.GONE
+            if (!showCalendar) {
+                binding.showCalendar.setCompoundDrawablesWithIntrinsicBounds(
+                    R.drawable.baseline_arrow_drop_down_24_white,
+                    0,
+                    0,
+                    0
+                )
+            } else {
+                binding.showCalendar.setCompoundDrawablesWithIntrinsicBounds(
+                    R.drawable.baseline_arrow_drop_up_24_white,
+                    0,
+                    0,
+                    0
+                )
+            }
         }
 
         binding.chosenDateChip.visibility = View.GONE
+        binding.emptyListTextview.visibility = View.GONE
 
         binding.calendarView
             .setOnDateChangeListener{ _, year, month, dayOfMonth ->
@@ -73,17 +98,7 @@ class DetailsFragment : Fragment() {
                     }
                 }
 
-        // Tarkkailee viewmodelin mealsByDate-listaa, joka sisältää muokattuja MealExpanded-luokan objekteja ja päivittää tiedot eteenpäin recyclerviewin adapterille
-        mealViewModel.mealsByDate.observe(this.viewLifecycleOwner) { items ->
-            items.let {
-                if (chosenDate == "") {
-                    adapter.submitList(it.distinctBy { it.date })
-                } else {
-                    val list = it.filter { it.date == chosenDate }
-                    adapter.submitList(list.distinctBy { it.date })
-                }
-            }
-        }
+        observeViewModelAgain(adapter, chosenDate)
 
         binding.chosenDateChip.setOnClickListener {
             if (chosenDate != "") {
@@ -93,16 +108,29 @@ class DetailsFragment : Fragment() {
             }
         }
     }
-
+    // Tarkkailee viewmodelin mealsByDate-listaa, joka sisältää muokattuja MealExpanded-luokan objekteja ja päivittää tiedot eteenpäin recyclerviewin adapterille
     private fun observeViewModelAgain(adapter: MealAdapter, chosenDate: String) {
         mealViewModel.mealsByDate.removeObservers(this)
         mealViewModel.mealsByDate.observe(this.viewLifecycleOwner) { items ->
             items.let {
-                if (chosenDate == "") {
+                if (it.isEmpty()) {
+                    binding.apply {
+                        emptyListTextview.visibility = View.VISIBLE
+                        recyclerView.visibility = View.GONE
+                    }
+                } else if (chosenDate == "") {
                     adapter.submitList(it.distinctBy { it.date })
+                    binding.apply {
+                        emptyListTextview.visibility = View.GONE
+                        recyclerView.visibility = View.VISIBLE
+                    }
                 } else {
                     val list = it.filter { it.date == chosenDate }
                     adapter.submitList(list.distinctBy { it.date })
+                    binding.apply {
+                        emptyListTextview.visibility = View.GONE
+                        recyclerView.visibility = View.VISIBLE
+                    }
                 }
             }
         }
