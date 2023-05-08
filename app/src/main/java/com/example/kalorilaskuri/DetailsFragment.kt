@@ -20,8 +20,8 @@ import android.util.Log
 
 class DetailsFragment : Fragment() {
 
-    private val PREFS_NAME = "MyPrefs"
-    private val KALORI_LIMIT_KEY = "KaloriLimit"
+    private val prefsname = "MyPrefs"
+    private val kalorilimitkey = "KaloriLimit"
 
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
@@ -48,8 +48,8 @@ class DetailsFragment : Fragment() {
             var detailsFragment = this@DetailsFragment
         }
 
-        val prefs = requireActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        val kaloriLimit = prefs.getInt(KALORI_LIMIT_KEY, 2000)
+        val prefs = requireActivity().getSharedPreferences(prefsname, Context.MODE_PRIVATE)
+        val kaloriLimit = prefs.getInt(kalorilimitkey, 2000)
 
 
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())

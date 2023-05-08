@@ -47,7 +47,7 @@ class MealAdapter(
                 totalCalories.text = meal.totalCal.toString()
                 if (meal.totalCal > kaloriLimit) {
 
-                        binding.totalCalories.setText("Kalorit ylittyneet " + kaloriLimit + "/"+ meal.totalCal)
+                        binding.totalCalories.setText("Päivän kaloriraja " + kaloriLimit + "/"+ meal.totalCal)
                     }
                 //recyclerViewMealsByDate.layoutManager = LinearLayoutManager()
                 val mealsByDateAdapter = MealsByDateAdapter {

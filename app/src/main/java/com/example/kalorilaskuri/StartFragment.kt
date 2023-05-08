@@ -18,8 +18,8 @@ class StartFragment : Fragment() {
     private var _binding: FragmentStartBinding? = null
     private val binding get() = _binding!!
 
-    private val PREFS_NAME = "MyPrefs"
-    private val KALORI_LIMIT_KEY = "KaloriLimit"
+    private val prefsname = "MyPrefs"
+    private val kalorilimitkey = "KaloriLimit"
 
     private lateinit var sharedPrefs: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
@@ -28,7 +28,7 @@ class StartFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        sharedPrefs = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        sharedPrefs = requireContext().getSharedPreferences(prefsname, Context.MODE_PRIVATE)
         editor = sharedPrefs.edit()
 
         _binding = FragmentStartBinding.inflate(inflater, container, false)
@@ -41,6 +41,7 @@ class StartFragment : Fragment() {
             lifecycleOwner = viewLifecycleOwner
             startFragment = this@StartFragment
         }
+
         val kaloriLimitEditText = view.findViewById<EditText>(R.id.kaloriLimit)
         kaloriLimitEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -49,8 +50,11 @@ class StartFragment : Fragment() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val kaloriLimit = s.toString().toIntOrNull()
-                if (kaloriLimit != null) {
-                    editor.putInt(KALORI_LIMIT_KEY, kaloriLimit)
+                if (kaloriLimit != null && s?.length ?: 0 > 1) {
+                    editor.putInt(kalorilimitkey, kaloriLimit)
+                    editor.apply()
+                }else{
+                    editor.remove(kalorilimitkey)
                     editor.apply()
                 }
             }
@@ -59,7 +63,7 @@ class StartFragment : Fragment() {
                 // Do nothing
             }
         })
-        val savedKaloriLimit = sharedPrefs.getInt(KALORI_LIMIT_KEY, -1)
+        val savedKaloriLimit = sharedPrefs.getInt(kalorilimitkey, -1)
         if (savedKaloriLimit != -1) {
             kaloriLimitEditText.setText(savedKaloriLimit.toString())
         }
