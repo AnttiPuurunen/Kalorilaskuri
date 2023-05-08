@@ -8,42 +8,66 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.kalorilaskuri.databinding.FragmentStartBinding
 import android.content.Context
+import android.widget.EditText
+import android.content.SharedPreferences
+import android.text.TextWatcher
+import android.text.Editable
 
 class StartFragment : Fragment() {
 
     private var _binding: FragmentStartBinding? = null
     private val binding get() = _binding!!
-    private val sharedPreferences by lazy { requireContext().getSharedPreferences("myPrefs", Context.MODE_PRIVATE) }
-    private var savedValue = 0f
+
+    private val prefsname = "MyPrefs"
+    private val kalorilimitkey = "KaloriLimit"
+
+    private lateinit var sharedPrefs: SharedPreferences
+    private lateinit var editor: SharedPreferences.Editor
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val fragmentBinding = FragmentStartBinding.inflate(inflater, container, false)
-        _binding = fragmentBinding
-        savedValue = sharedPreferences.getFloat("kaloriLimit", 0f)
-        return fragmentBinding.root
+        sharedPrefs = requireContext().getSharedPreferences(prefsname, Context.MODE_PRIVATE)
+        editor = sharedPrefs.edit()
+
+        _binding = FragmentStartBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             startFragment = this@StartFragment
-            kaloriLimit.setText(savedValue.toString())
         }
 
-    }
+        val kaloriLimitEditText = view.findViewById<EditText>(R.id.kaloriLimit)
+        kaloriLimitEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // Do nothing
+            }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        val editor = sharedPreferences.edit()
-        editor.putFloat("kaloriLimit", binding.kaloriLimit.text.toString().toFloatOrNull() ?: 0f)
-        editor.apply()
-    }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val kaloriLimit = s.toString().toIntOrNull()
+                if (kaloriLimit != null && s?.length ?: 0 > 1) {
+                    editor.putInt(kalorilimitkey, kaloriLimit)
+                    editor.apply()
+                }else{
+                    editor.remove(kalorilimitkey)
+                    editor.apply()
+                }
+            }
 
+            override fun afterTextChanged(s: Editable?) {
+                // Do nothing
+            }
+        })
+        val savedKaloriLimit = sharedPrefs.getInt(kalorilimitkey, -1)
+        if (savedKaloriLimit != -1) {
+            kaloriLimitEditText.setText(savedKaloriLimit.toString())
+        }
+    }
     fun goToAddScreen() {
         findNavController().navigate(R.id.action_startFragment_to_addFragment2)
     }
