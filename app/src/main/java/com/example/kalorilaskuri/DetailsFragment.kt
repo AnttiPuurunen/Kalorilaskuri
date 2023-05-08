@@ -15,9 +15,12 @@ import com.example.kalorilaskuri.viewmodels.MealViewModelFactory
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.*
-
+import android.content.Context
 
 class DetailsFragment : Fragment() {
+
+    private val PREFS_NAME = "MyPrefs"
+    private val KALORI_LIMIT_KEY = "KaloriLimit"
 
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
@@ -43,10 +46,19 @@ class DetailsFragment : Fragment() {
             lifecycleOwner = viewLifecycleOwner
             var detailsFragment = this@DetailsFragment
         }
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        val adapter = MealAdapter {
 
-        }
+        val prefs = requireActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        val kaloriLimit = prefs.getInt(KALORI_LIMIT_KEY, 2000)
+
+
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        val adapter = MealAdapter(
+            onItemClicked = { meal: MealExpanded ->
+
+            },
+            kaloriLimit = kaloriLimit
+        )
+
         binding.recyclerView.adapter = adapter
 
         binding.calendarView.apply {
