@@ -10,10 +10,10 @@
         <variable
             name="viewModel"
             type="com.example.kalorilaskuri.viewmodels.MealViewModel" />
-
         <variable
-            name="startFragment"
+            name="detailsFragment"
             type="com.example.kalorilaskuri.DetailsFragment" />
+        <import type="android.view.View"/>
     </data>
 
     <ScrollView
@@ -88,12 +88,15 @@
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
             <TextView
                 android:id="@+id/empty_list_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="@string/no_data_for_date" />
+                android:text="@string/no_data_for_date"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:padding="16dp" />
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
