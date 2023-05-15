@@ -16,12 +16,17 @@ import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.*
 import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
+import java.time.format.DateTimeFormatter
 
 class DetailsFragment : Fragment() {
 
     private val prefsname = "MyPrefs"
     private val kalorilimitkey = "KaloriLimit"
+
+    private var chosenDate = ""
+    private var showCalendar = false
 
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
@@ -32,8 +37,8 @@ class DetailsFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
         val fragmentBinding = FragmentDetailsBinding.inflate(inflater, container, false)
         _binding = fragmentBinding
         return fragmentBinding.root
@@ -41,8 +46,12 @@ class DetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var chosenDate = ""
-        var showCalendar = false
+
+        if (savedInstanceState != null) {
+            chosenDate = savedInstanceState.getString("chosenDate").toString()
+            showCalendar = savedInstanceState.getBoolean("showCalendar")
+        }
+
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             var detailsFragment = this@DetailsFragment
@@ -62,17 +71,29 @@ class DetailsFragment : Fragment() {
 
         binding.recyclerView.adapter = adapter
 
-        binding.calendarView.apply {
-            visibility = View.GONE
-            maxDate = System.currentTimeMillis()
+        if (!showCalendar) {
+            binding.calendarView.apply {
+                visibility = View.GONE
+                maxDate = System.currentTimeMillis()
+            }
+            binding.showCalendar.setCompoundDrawablesWithIntrinsicBounds(
+                R.drawable.baseline_arrow_drop_down_24_white,
+                0,
+                0,
+                0
+            )
+        } else {
+            binding.calendarView.apply {
+                visibility = View.VISIBLE
+                maxDate = System.currentTimeMillis()
+            }
+            binding.showCalendar.setCompoundDrawablesWithIntrinsicBounds(
+                R.drawable.baseline_arrow_drop_up_24_white,
+                0,
+                0,
+                0
+            )
         }
-
-        binding.showCalendar.setCompoundDrawablesWithIntrinsicBounds(
-            R.drawable.baseline_arrow_drop_down_24_white,
-            0,
-            0,
-            0
-        )
 
         binding.showCalendar.setOnClickListener {
             showCalendar = !showCalendar
@@ -95,21 +116,38 @@ class DetailsFragment : Fragment() {
             }
         }
 
-        binding.chosenDateChip.visibility = View.GONE
+        if (chosenDate == "") {
+            binding.chosenDateChip.visibility = View.GONE
+            observeViewModelAgain(adapter, chosenDate)
+        } else {
+            observeViewModelAgain(adapter, chosenDate)
+            binding.chosenDateChip.apply {
+                text = chosenDate
+                visibility = View.VISIBLE
+            }
+            binding.calendarView.apply {
+                val formatter = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+                val selectedDate = formatter.parse(chosenDate)
+                if (selectedDate != null) {
+                    date = selectedDate.time
+                }
+            }
+        }
+
         binding.emptyListTextview.visibility = View.GONE
 
         binding.calendarView
-            .setOnDateChangeListener{ _, year, month, dayOfMonth ->
-                    val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
-                    val c = Calendar.getInstance()
-                    c.set(year, month, dayOfMonth)
-                    chosenDate = dateFormat.format(c.timeInMillis)
-                    observeViewModelAgain(adapter, chosenDate)
-                    binding.chosenDateChip.apply {
-                        text = chosenDate
-                        visibility = View.VISIBLE
-                    }
+            .setOnDateChangeListener { _, year, month, dayOfMonth ->
+                val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+                val c = Calendar.getInstance()
+                c.set(year, month, dayOfMonth)
+                chosenDate = dateFormat.format(c.timeInMillis)
+                observeViewModelAgain(adapter, chosenDate)
+                binding.chosenDateChip.apply {
+                    text = chosenDate
+                    visibility = View.VISIBLE
                 }
+            }
 
         observeViewModelAgain(adapter, chosenDate)
 
@@ -121,12 +159,13 @@ class DetailsFragment : Fragment() {
             }
         }
     }
+
     // Tarkkailee viewmodelin mealsByDate-listaa, joka sisältää muokattuja MealExpanded-luokan objekteja ja päivittää tiedot eteenpäin recyclerviewin adapterille
     private fun observeViewModelAgain(adapter: MealAdapter, chosenDate: String) {
         mealViewModel.mealsByDate.removeObservers(this)
         mealViewModel.mealsByDate.observe(this.viewLifecycleOwner) { items ->
             items.let {
-                 if (chosenDate == "") {
+                if (chosenDate == "") {
                     adapter.submitList(it.distinctBy { it.date })
                     if (it.isNullOrEmpty()) {
                         binding.apply {
@@ -155,6 +194,12 @@ class DetailsFragment : Fragment() {
                 }
             }
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean("showCalendar", showCalendar)
+        outState.putString("chosenDate", chosenDate)
     }
 
     override fun onDestroyView() {
