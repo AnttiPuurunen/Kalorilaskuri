@@ -50,7 +50,7 @@ class StartFragment : Fragment() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val kaloriLimit = s.toString().toIntOrNull()
-                if (kaloriLimit != null && s?.length ?: 0 > 1) {
+                if (kaloriLimit != null && s?.length ?: 0 > 2) {
                     editor.putInt(kalorilimitkey, kaloriLimit)
                     editor.apply()
                 }else{
