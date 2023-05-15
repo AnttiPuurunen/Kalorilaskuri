@@ -1,5 +1,6 @@
 package com.example.kalorilaskuri
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,6 +41,7 @@ class MealAdapter(
         RecyclerView.ViewHolder(binding.root) {
         private var expand = false
         // Bindataan näytettävän listan kentät käyttöliittymässä Meal-dataluokan properteihin
+        @SuppressLint("SetTextI18n")
         fun bind(meal: MealExpanded, kaloriLimit: Int) {
             binding.apply {
                 mealDate.text = meal.date
@@ -47,7 +49,7 @@ class MealAdapter(
                 totalCalories.text = meal.totalCal.toString()
                 if (meal.totalCal > kaloriLimit) {
 
-                        binding.totalCalories.setText("Päivän kaloriraja " + kaloriLimit + "/"+ meal.totalCal)
+                    binding.totalCalories.text = "Päivän kaloriraja " + kaloriLimit + "/"+ meal.totalCal
                     }
                 //recyclerViewMealsByDate.layoutManager = LinearLayoutManager()
                 val mealsByDateAdapter = MealsByDateAdapter {

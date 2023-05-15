@@ -7,14 +7,6 @@
     tools:context=".AddFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#B6E9EF"
-        android:text="@string/add_fragment"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="28dp" />
 
     <TextView
         android:id="@+id/nimiTextView"
@@ -25,19 +17,19 @@
         app:layout_constraintBottom_toTopOf="@+id/ruokaEditText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/spinner"
+        app:layout_constraintTop_toBottomOf="@+id/spinner"
         app:layout_constraintVertical_bias="0.5" />
 
     <EditText
         android:id="@+id/ruokaEditText"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Syötä ruuan nimi"
         android:inputType="text"
         android:minHeight="48dp"
         app:layout_constraintBottom_toTopOf="@+id/maaraTextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nimiTextView"
         app:layout_constraintVertical_bias="0.5" />
@@ -58,8 +50,8 @@
 
     <SeekBar
         android:id="@+id/maaraSeekBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="280dp"
+        android:layout_height="48dp"
         android:layout_below="@+id/maaraTextView"
         android:max="3000"
         android:progress="0"
